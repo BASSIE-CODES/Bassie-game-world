@@ -66,8 +66,67 @@ button:hover {
     background-color: #ff6fd8;
 }
 
-.affordable { background-color: #4CAF50 !important; }
-.locked { background-color: #555 !important; cursor: not-allowed; }
+/* 🌳 SKILL TREE STYLES */
+.skill-overlay {
+    display:none;
+    position:fixed;
+    width:100%;
+    height:100%;
+    top:0;
+    left:0;
+    background:rgba(120, 90, 160, 0.35);
+    backdrop-filter: blur(6px);
+}
+
+.skill-panel {
+    background:#2b2b3c;
+    width:90%;
+    margin:3% auto;
+    padding:20px;
+    border-radius:15px;
+    color:white;
+}
+
+.tree-container {
+    position: relative;
+    width: 100%;
+    height: 500px;
+}
+
+/* nodes */
+.node {
+    position:absolute;
+    width:120px;
+    padding:10px;
+    border-radius:10px;
+    cursor:pointer;
+    text-align:center;
+    font-size:12px;
+}
+
+.locked {
+    background: rgba(120, 90, 160, 0.25);
+    color:#ddd;
+}
+
+.unlocked {
+    background:#ff9de2;
+    color:black;
+}
+
+/* lines */
+svg {
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    z-index:0;
+}
+
+.node {
+    z-index:2;
+}
 </style>
 </head>
 
@@ -79,213 +138,157 @@ button:hover {
     <button class="tab-button" onclick="openTab('games')">Games</button>
     <button class="tab-button" onclick="openTab('clicker')">Clicker</button>
     <button class="tab-button" onclick="openTab('tutorials')">Tutorials</button>
-    <button class="tab-button" onclick="openTab('leaderboard')">Leaderboard</button>
-</div>
-
-<!-- GAMES -->
-<div id="games" class="section active">
-    <div class="game-box">
-        <h2>Slope</h2>
-        <a href="https://geometryboss.com/games/slope/" target="_blank"><button>Play</button></a>
-    </div>
-
-    <div class="game-box">
-        <h2>Subway Surfers</h2>
-        <a href="https://geometryboss.com/games/subwaysurfers/" target="_blank"><button>Play</button></a>
-    </div>
-
-    <div class="game-box">
-        <h2>BitLife</h2>
-        <a href="https://geometryboss.com/games/bitlife/" target="_blank"><button>Play</button></a>
-    </div>
 </div>
 
 <!-- CLICKER -->
-<div id="clicker" class="section">
-    <div class="game-box">
-        <h2>🔥 CCM Clicker</h2>
+<div id="clicker" class="section active">
 
-        <p id="score">Score: 0</p>
-        <p id="mult">Multiplier: 1x</p>
+<div class="game-box">
+    <h2>🌳 REAL BRANCHING SKILL TREE</h2>
 
-        <button onclick="clickGame()">Click (+)</button>
-        <button id="upgradeBtn" onclick="buyUpgrade()"></button>
-        <button id="autoBtn" onclick="buyAuto()"></button>
-        <button id="bigBtn" onclick="buyBigClick()"></button>
-        <button id="multBtn" onclick="buyMultiplier()"></button>
-        <button onclick="rebirth()">REBIRTH</button>
-    </div>
+    <p id="score">Score: 0</p>
+    <p id="mult">Multiplier: 1x</p>
+
+    <button onclick="openTree()">OPEN SKILL TREE</button>
+    <button onclick="clickGame()">CLICK</button>
+    <button onclick="rebirth()">REBIRTH (720M)</button>
 </div>
 
-<!-- TUTORIALS -->
-<div id="tutorials" class="section">
-    <div class="game-box">
-        <h2>📘 Tutorials</h2>
-        <p>Stuff here</p>
-    </div>
 </div>
 
-<!-- LEADERBOARD -->
-<div id="leaderboard" class="section">
-    <div class="game-box">
-        <h2>🌍 Global Leaderboard</h2>
+<!-- SKILL TREE -->
+<div id="skillTree" class="skill-overlay">
 
-        <p id="playerName">You: Player</p>
-        <pre id="leaderboardList">Loading...</pre>
+<div class="skill-panel">
 
-        <button onclick="setName()">Set Username</button>
-        <button onclick="submitScore()">Submit Score</button>
-    </div>
+<h2>🌳 Branching Skill Tree</h2>
+<button onclick="closeTree()">Close</button>
+
+<div class="tree-container">
+
+<svg id="lines"></svg>
+
+<div class="node locked" id="n1" style="top:200px;left:50px" onclick="buy('n1')">+1 Click</div>
+
+<div class="node locked" id="n2" style="top:120px;left:250px" onclick="buy('n2')">Auto Click</div>
+<div class="node locked" id="n3" style="top:280px;left:250px" onclick="buy('n3')">Crit Chance</div>
+
+<div class="node locked" id="n4" style="top:80px;left:450px" onclick="buy('n4')">Auto Speed</div>
+<div class="node locked" id="n5" style="top:180px;left:450px" onclick="buy('n5')">x2 Click</div>
+<div class="node locked" id="n6" style="top:300px;left:450px" onclick="buy('n6')">Crit x2</div>
+
 </div>
 
-<!-- FIREBASE -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+</div>
+</div>
 
-const firebaseConfig = {
-  apiKey: "PASTE",
-  authDomain: "PASTE",
-  projectId: "PASTE"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-window.playerName = localStorage.getItem("playerName") || "Player";
-
-window.setName = function(){
-    let name = prompt("Enter username:");
-    if(name){
-        window.playerName = name;
-        localStorage.setItem("playerName", name);
-    }
-};
-
-window.submitScore = async function(){
-    await addDoc(collection(db,"leaderboard"),{
-        name: window.playerName,
-        score: window.score || 0
-    });
-    alert("Score submitted!");
-};
-
-window.loadLeaderboard = async function(){
-    const q = query(collection(db,"leaderboard"), orderBy("score","desc"), limit(5));
-    const snap = await getDocs(q);
-
-    let list = [];
-    snap.forEach(doc=>{
-        let d = doc.data();
-        list.push(d.name + " : " + Math.floor(d.score));
-    });
-
-    document.getElementById("leaderboardList").innerText = list.join("\n");
-};
-</script>
-
-<!-- YOUR GAME -->
 <script>
 
 let score = 0;
 let clickPower = 1;
-let autoClickers = 0;
 let multiplier = 1;
 let rebirths = 0;
-let autoInterval;
 
-function formatNumber(num) {
-    if (num >= 1e9) return (num / 1e9).toFixed(1) + "B";
-    if (num >= 1e6) return (num / 1e6).toFixed(1) + "M";
-    if (num >= 1e3) return (num / 1e3).toFixed(1) + "K";
-    return num;
+let unlocked = {};
+
+// 🌳 TREE STRUCTURE (REAL BRANCHING)
+const tree = {
+    n1: {cost:50, unlocks:["n2","n3"], effect:()=>clickPower++},
+    n2: {cost:120, unlocks:["n4","n5"], effect:()=>startAuto()},
+    n3: {cost:200, unlocks:["n6"], effect:()=>multiplier+=0.2},
+    n4: {cost:500, effect:()=>multiplier+=0.5},
+    n5: {cost:800, effect:()=>clickPower*=2},
+    n6: {cost:1000, effect:()=>multiplier*=2}
+};
+
+function openTree(){
+    document.getElementById("skillTree").style.display="block";
+    drawLines();
 }
 
-function clickGame() {
+function closeTree(){
+    document.getElementById("skillTree").style.display="none";
+}
+
+function buy(id){
+    let node = tree[id];
+
+    if(score >= node.cost && !unlocked[id]){
+        score -= node.cost;
+        unlocked[id]=true;
+
+        document.getElementById(id).classList.remove("locked");
+        document.getElementById(id).classList.add("unlocked");
+
+        node.effect();
+
+        if(node.unlocks){
+            node.unlocks.forEach(u=>{
+                document.getElementById(u).style.opacity="1";
+            });
+        }
+    }
+}
+
+function drawLines(){
+    const svg = document.getElementById("lines");
+    svg.innerHTML = "";
+
+    const lines = [
+        ["n1","n2"],
+        ["n1","n3"],
+        ["n2","n4"],
+        ["n2","n5"],
+        ["n3","n6"]
+    ];
+
+    lines.forEach(pair=>{
+        let a = document.getElementById(pair[0]).getBoundingClientRect();
+        let b = document.getElementById(pair[1]).getBoundingClientRect();
+
+        let line = document.createElementNS("http://www.w3.org/2000/svg","line");
+
+        line.setAttribute("x1", a.left + 60);
+        line.setAttribute("y1", a.top + 20);
+        line.setAttribute("x2", b.left + 60);
+        line.setAttribute("y2", b.top + 20);
+
+        line.setAttribute("stroke","#ff9de2");
+        line.setAttribute("stroke-width","2");
+
+        svg.appendChild(line);
+    });
+}
+
+function clickGame(){
     score += clickPower * multiplier;
     update();
 }
 
-function buyUpgrade() {
-    let cost = 50 * (rebirths + 1);
-    if (score >= cost) {
-        score -= cost;
-        clickPower += 1 * (rebirths + 1);
-        update();
-    }
-}
-
-function buyAuto() {
-    let cost = 150 * (rebirths + 1);
-    if (score >= cost) {
-        score -= cost;
-        autoClickers++;
-
-        if (!autoInterval) {
-            autoInterval = setInterval(() => {
-                score += autoClickers * multiplier;
-                update();
-            }, 1000);
-        }
-
-        update();
-    }
-}
-
-function buyBigClick() {
-    let cost = 500 * (rebirths + 1);
-    if (score >= cost) {
-        score -= cost;
-        clickPower += 5 * (rebirths + 1);
-        update();
-    }
-}
-
-function buyMultiplier() {
-    let cost = 1000 * (rebirths + 1);
-    if (score >= cost) {
-        score -= cost;
-        multiplier += 1;
-        update();
-    }
-}
-
-function rebirth() {
-    if (score >= 1000000000) {
-        score = 0;
-        clickPower = 1;
-        autoClickers = 0;
-        multiplier = 1;
+function rebirth(){
+    if(score >= 720000000){
+        score=0;
+        clickPower=1;
+        multiplier=1;
         rebirths++;
         update();
     }
 }
 
-function update() {
-    document.getElementById("score").innerText = "Score: " + formatNumber(score);
-    document.getElementById("mult").innerText =
-        "Multiplier: " + multiplier + "x | Rebirths: " + rebirths;
-
-    let upgradeCost = 50 * (rebirths + 1);
-    let autoCost = 150 * (rebirths + 1);
-    let bigCost = 500 * (rebirths + 1);
-    let multCost = 1000 * (rebirths + 1);
-
-    document.getElementById("upgradeBtn").innerText = "+1 Click (" + formatNumber(upgradeCost) + ")";
-    document.getElementById("autoBtn").innerText = "Auto Click (" + formatNumber(autoCost) + ")";
-    document.getElementById("bigBtn").innerText = "Big Click Boost (" + formatNumber(bigCost) + ")";
-    document.getElementById("multBtn").innerText = "Multiplier Boost (" + formatNumber(multCost) + ")";
-
-    if(window.loadLeaderboard){
-        window.loadLeaderboard();
-    }
-
-    document.getElementById("playerName").innerText =
-        "You: " + (window.playerName || "Player");
+function startAuto(){
+    setInterval(()=>{
+        score += 1 * multiplier;
+        update();
+    },1000);
 }
 
-function openTab(tab) {
-    document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+function update(){
+    document.getElementById("score").innerText="Score: "+score;
+    document.getElementById("mult").innerText="Multiplier: "+multiplier;
+}
+
+function openTab(tab){
+    document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
     document.getElementById(tab).classList.add("active");
 }
 
