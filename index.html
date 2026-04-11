@@ -1,17 +1,22 @@
-<!DOCTYPE html><html>
+<!DOCTYPE html>
+<html>
 <head>
-<title>Bassie’s Game World</title><style>
+<title>Bassie’s Game World</title>
+    
+<link rel="icon" href="/favicon.png">
+
+<style>
 body {
-    background-color: #1a1a2e;
-    color: #f5c6ff;
+    background-color: #d5f3ff;
+    color: #dffddc;
     font-family: Arial;
     text-align: center;
     margin: 0;
 }
 
 h1 {
-    background-color: #2e1a47;
-    color: #ff9de2;
+    background-color: #fbf3f3;
+    color: #fde0e0;
     padding: 15px;
 }
 
@@ -22,16 +27,17 @@ h1 {
 }
 
 .tab-button {
-    background: #ff9de2;
+    background: #fffdcb;
     border: none;
     padding: 10px 15px;
     margin: 5px;
     cursor: pointer;
     border-radius: 10px;
+    transition: 0.25s ease;
 }
 
 .tab-button:hover {
-    background: #ff6fd8;
+    transform: scale(1.07)
 }
 
 .section {
@@ -44,70 +50,95 @@ h1 {
 }
 
 .game-box {
-    background-color: #2b2b3c;
+    background-color: #49c2f2;
     margin: 20px auto;
     padding: 20px;
     border-radius: 15px;
     width: 70%;
+    transition: 0.2s ease;
+}
+
+    .game-box:hover {
+        transform: translateY(-3px);
 }
 
 button {
-    background-color: #ff9de2;
+    background-color:dffddc;
     border: none;
     padding: 10px 20px;
     border-radius: 10px;
     cursor: pointer;
+    transition: 0.25s ease;
 }
 
 button:hover {
-    background-color: #ff6fd8;
+    background-color: #fffdcb;
+    transform: scale(1.07);
 }
 </style></head><body><h1>
-🎀 Bassie’s Game World 🎀 <br>
-Welcome to Bassie’s world of play. Right now we only have a few games available.
+☕ mochi land ☕ <br>
+welcome fellow mochis. this is the game land for play. have fun and odnt requess.
 </h1><div class="tabs">
     <button class="tab-button" onclick="openTab('games')">Games</button>
     <button class="tab-button" onclick="openTab('tutorials')">Tutorials</button>
 </div><!-- GAMES --><div id="games" class="section active"><div class="game-box">
     <h2>Slope</h2>
-    <a href="https://geometryboss.com/games/slope/">
-        <button>Play</button>
-    </a>
+    <button onclick="window.open('https://geometryboss.com/games/slope/','_blank')">
+        Play</button>
 </div>
 
 <div class="game-box">
     <h2>Subway Surfers</h2>
-    <a href="https://geometryboss.com/games/subwaysurfers/">
-        <button>Play</button>
-    </a>
+    <button onclick="window.open('https://geometryboss.com/games/subwaysurfers/','_blank')">
+        Play</button>
+</div>
+
+<div class="game-box">
+    <h2>Meeland.io</h2>
+    <button onclick="window.open('https://meeland.io/','_blank')">
+        Play</button>
 </div>
 
 <div class="game-box">
     <h2>BitLife</h2>
-    <a href="https://geometryboss.com/games/bitlife/">
-        <button>Play</button>
-    </a>
+    <button onclick="window.open('https://geometryboss.com/games/bitlife/','_blank')">
+      Play</button>
 </div>
 
 <div class="game-box">
     <h2>School Boy Runaway</h2>
-    <a href="https://bassie-codes.github.io/school-run-way/">
-        <button>Play</button>
-    </a>
+    <button onclick="window.open('https://bassie-codes.github.io/school-run-way/','_blank')">
+        Play</button>
 </div>
 
 <div class="game-box">
     <h2>Bloodmoney</h2>
-     <a href="https://bassie-codes.github.io/harpy/">
-         <button>Play</button>
-     </a>    
+     <button onclick="window.open('https://bassie-codes.github.io/harpy/','_blank')">
+        Play</button>    
 </div>
 
 <div class="game-box">
     <h2>Friday Night Funkin</h2>
-    <a href="https://bassie-codes.github.io/fnf/">
-        <button>Play</button>
-    </a>
+    <button onclick="window.open('https://bassie-codes.github.io/fnf/','_blank')">
+        Play</button>
+</div>
+
+<div class="game-box">
+    <h2>Slime Rancher</h2>
+    <button onclick="window.open('https://bassie-codes.github.io/kdgn/','_blank')">
+        Play</button>
+</div>
+
+<div class="game-box">
+    <h2>Kindergarten 1</h2>
+    <button onclick="window.open('https://bassie-codes.github.io/bh/','_blank')">
+        Play</button>
+</div>
+
+<div class="game-box">
+    <h2>Bad Parenting 1</h2>
+    <button onclick="window.open('https://bassie-codes.github.io/bp1/','_blank')">
+        Play</button>
 </div>
 
 </div><!-- TUTORIALS --><div id="tutorials" class="section"><h2>📘 Tutorials</h2>
@@ -117,7 +148,7 @@ Welcome to Bassie’s world of play. Right now we only have a few games availabl
 <h3>
 
 This is how to change your name servers on Chrome. First make sure you're on a non-school controlled WiFi.
-Open quick settings → click WiFi → click again → scroll to network → name servers → choose custom → enter:
+Open quick settings → click WiFi → click the wifi your connected to → scroll to network → name servers → choose custom → enter:
 
 <br><br>
 66.23.198.252<br>
